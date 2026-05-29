@@ -68,6 +68,8 @@ function table($num){
 
 table(5);
 
+table(7);
+
 echo "<br>";
 ?>
 
