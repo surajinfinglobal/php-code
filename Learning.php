@@ -68,9 +68,111 @@ function table($num){
 
 table(5);
 
-table(7);
+// table(7);
+echo "<br>";
+// while loop
+$a = 1;
+while($a <= 5){
+    echo "The value of a is: $a <br>";
+    $a++;
+}
+
+
+// do while loop
+echo "<br>";
+$b = 1;
+do {
+    echo "the value of b is :$b <br>";
+    $b++;
+}while($b <= 5);
+
+
+// mutidimentional array
+$students = array(
+    array("name" => "John", "age" => 20, "grade" => "A"),
+    array("name" => "suraj", "age" => 22, "grade" => "B"),
+    array("name" => "Doe", "age" => 21, "grade" => "C")
+);
+echo "<br>";
+
+
+foreach($students as $student){
+    echo "Name: " . $student["name"] . ", Age: " . $student["age"] . ", Grade: " . $student["grade"] . "<br>";
+}
+echo "<br>";
 
 echo "<br>";
+
+for($i = 0;$i < count($students); $i++){
+    echo "Name: " . $students[$i]["name"] . ", Age: " . $students[$i]["age"] . ", Grade: " . $students[$i]["grade"] . "<br>";
+}
+echo "<br>";
+
+// string length strlen() function
+$name = "Suraj";
+echo strlen($name);
+echo "<br>";
+echo "<br>";
+// strtoupper() function
+echo strtoupper($name);
+echo "<br>";
+echo "<br>";
+// strtolower() function
+echo strtolower($name);
+echo "<br>";
+echo "<br>";
+// str_replace() function
+echo str_replace("a", "o", $name);
+echo "<br>";
+echo "<br>";
+// substr() function
+echo substr($name, 0, 3);
+echo "<br>";
+echo "<br>";
+// explode() function
+$sentence = "Hello World";
+$words = explode(" ", $sentence);
+print_r($words);
+// implode() function
+
+$alphabet = ["a", "b", "c", "d", "e"];
+$joined = implode("-", $alphabet);
+echo "<br>";
+echo "<br>";
+echo $joined;
+// date function
+echo "<br>";
+echo date("d-m-Y");
+echo "<br>";
+echo "<br>";
+
+// isset() function
+$var = "Hello";
+if(isset($care)){
+    echo "Variable is set.";
+} else {
+    echo "Variable is not set.";
+}
+echo "<br>";
+echo "<br>";
+// empty() function
+$var2 = "    rgtferg   ";
+if(empty($var2)){
+    echo "Variable is empty.";
+} else {
+    echo "Variable is not empty.";
+}
+
+// remove white space from the beginning and end of a string using trim() function
+echo trim($var2);
+echo "<br>";
+echo "<br>";
+
+//  md5() function
+$password = "mysecretpassword";
+$hashed_password = md5($password);
+echo $hashed_password;
+
 ?>
 
 <?php
@@ -86,8 +188,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
   <label for="name">Name:</label>
-  <input type="text"  name="name">
+  <input type="text"  name="name"> <input type="submit" value="Submit">
   <br></br>
-  <b> Welcome, <?php echo $name; ?>!</b>
-  <input type="submit" value="Submit">
+  <b style="color: blue; display:block;height: 20px; background-color: lightgray; font-size: 18px; padding: 10px; text-align: center;"> Welcome, <?php echo htmlspecialchars($name); ?>!</b>
+ 
 </form>
