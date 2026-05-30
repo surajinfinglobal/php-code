@@ -176,10 +176,39 @@ echo $hashed_password;
 ?>
 
 <?php
+session_start();
+$message = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $name = $_POST["name"];
+     
+  if(!isset($_SESSION['carArray'])){
+        $_SESSION['carArray'] = [];
+    }
+    if(isset($_POST['add_car'])){
+        $carName = $_POST['car_name'];
+        if(!empty($carName)){
+             array_push($_SESSION['carArray'], $carName);
+               $message = "✅ Car added successfully!";
+        } else {
+              $message = "❌ Car name empty hai!";
+        }
+    
+    }
 
+
+    if(isset($_POST['delete'])){
+        $index = $_POST['delete'];
+        if(!empty($_SESSION['carArray'])){
+            array_pop($_SESSION['carArray']);
+            $message = "❌ Car deleted successfully!";
+        } else {
+            $message = "❌✅ No cars to delete!";
+        }
 }
+}
+
+
+
 ?>
 
 <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
@@ -188,7 +217,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
   <label for="name">Name:</label>
-  <input type="text"  name="name"> <input type="submit" value="Submit">
+  <input type="text"  name="name"> <input type="submit" value="Submit"><br><br>
+  
+  <input type="text" name="car_name" placeholder="Enter Car" required />
+  <button type="submit" name="add_car">Add Car</button><br><br>
+    <button type="submit" name="delete">Delete Car</button><br><br>
+  <h3>Added Cars (<?php echo count($_SESSION['carArray']); ?>)</h3>
+    <ul>
+        <?php
+        if (empty($_SESSION['carArray'])) {
+            echo "<li>No cars added yet.</li>";
+        } else {
+            foreach ($_SESSION['carArray'] as $index => $car) {
+                echo "<li><strong>" . ($index + 1) . ".</strong> $car</li>";
+            }
+        }
+        ?>
+    </ul>
+
+    <hr>
+    <h4>Current Array:</h4>
+    <h3><?php echo htmlspecialchars($message); ?></h3>
+    <pre><?php
+    $total = count($_SESSION['carArray']);
+    echo "Total cars: $total\n";
+?></pre>
   <br></br>
   <b style="color: blue; display:block;height: 20px; background-color: lightgray; font-size: 18px; padding: 10px; text-align: center;"> Welcome, <?php echo htmlspecialchars($name); ?>!</b>
  
