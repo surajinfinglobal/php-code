@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Glassmorphism Portal</title>
+  <style>
+    /* */
+    :root {
+      --lg-bg-color: rgba(255, 255, 255, 0.2);
+      --lg-highlight: rgba(255, 255, 255, 0.65);
+      --lg-text: #ffffff;
+      --lg-hover-glow: rgba(255, 255, 255, 0.35);
+      --lg-red: #fb4268;
+      --lg-emerald: #10b981;
+      --lg-grey: #5b5b5b;
+      --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    /* */
+    * {
+      box-sizing: border-box;
+    }
+
+body {
+  margin: 0;
+  padding: 2rem 0;
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  background: url("https://images.unsplash.com/photo-1551384963-cccb0b7ed94b?q=80&w=3247&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+    center/cover;
+  animation: bg-move 5s ease-in-out infinite alternate;
+}
+@keyframes bg-move {
+  from {
+    background-position: center center;
+  }
+  to {
+    background-position: center top;
+  }
+}
+    /* */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 440px;
+      perspective: 1000px;
+    }
+
+    .glass-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      font-weight: 600;
+      color: var(--lg-text);
+      background: transparent;
+      border-radius: 2rem;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 50px rgba(0, 0, 0, 0.15);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2), box-shadow 0.4s ease;
+      width: 100%;
+      backdrop-filter: blur(8px);
+    }
+
+    .glass-container:hover {
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35), 0 0 60px rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-filter {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      filter: url(#lg-dist);
+      isolation: isolate;
+      pointer-events: none;
+    }
+
+    .glass-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: var(--lg-bg-color);
+    }
+
+    .glass-specular {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      border-radius: inherit;
+      overflow: hidden;
+      box-shadow: inset 1px 1px 0 var(--lg-highlight),
+                  inset 0 0 8px var(--lg-highlight);
+      pointer-events: none;
+    }
+
+    /* */
+    .glass-content {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      padding: 2.5rem 2rem;
+      gap: 1.5rem;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-header h2 {
+      margin: 0;
+      font-size: 2.25rem;
+      color: var(--lg-text);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      letter-spacing: -0.5px;
+    }
+
+    .login-header p {
+      margin: 0.5rem 0 0;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 400;
+    }
+
+    /* Tabs for Login / Sign Up Switcher */
+    .tabs-container {
+      display: flex;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 5rem;
+      padding: 0.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      margin-bottom: 0.5rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: white;
+      padding: 0.7rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 5rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-btn.active {
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Form Fields */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* */
+    .form-group label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.85);
+      padding-left: 0.25rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .glass-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.85rem 1rem;
+      padding-right: 2.75rem; /* Space for icon */
+      border-radius: 0.75rem;
+      color: white;
+      font-size: 0.95rem;
+      font-family: var(--font-family);
+      outline: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .glass-input:focus {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 12px var(--lg-hover-glow);
+    }
+
+    .input-icon-btn {
+      position: absolute;
+      right: 0.85rem;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: color 0.2s;
+    }
+
+    .input-icon-btn:hover {
+      color: white;
+    }
+
+    /* */
+    /* Buttons */
+    .glass-btn {
+      background: white;
+      color: #121212;
+      border: none;
+      padding: 1rem;
+      border-radius: 5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+      margin-top: 0.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .glass-btn:hover {
+      background: var(--lg-highlight);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    .glass-btn:active {
+      transform: translateY(1px);
+    }
+
+    .login-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    .login-footer a {
+      color: var(--lg-text);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.2s, text-shadow 0.2s;
+    }
+
+    .login-footer a:hover {
+      opacity: 1;
+      text-shadow: 0 0 8px rgba(255,255,255,0.5);
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-weight: 400;
+      user-select: none;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      appearance: none;
+      background-color: rgba(0,0,0,0.2);
+      margin: 0;
+      font: inherit;
+      color: white;
+      width: 1.15em;
+      height: 1.15em;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 0.25em;
+      transform: translateY(-0.075em);
+      display: grid;
+      place-content: center;
+      cursor: pointer;
+      transition: 0.15s ease-in-out;
+    }
+
+    .checkbox-label input[type="checkbox"]::before {
+      content: "";
+      width: 0.65em;
+      height: 0.65em;
+      transform: scale(0);
+      transition: 120ms transform ease-in-out;
+      box-shadow: inset 1em 1em white;
+      transform-origin: center;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
+
+    .checkbox-label input[type="checkbox"]:checked {
+      background-color: var(--lg-red);
+      border-color: transparent;
+    }
+
+    .checkbox-label input[type="checkbox"]:checked::before {
+      transform: scale(1);
+    }
+
+    /* Interactive Feedback Modal (To avoid 'alert') */
+    .status-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translate(-50%, 100px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 1rem;
+      padding: 1rem 1.5rem;
+      color: white;
+      font-weight: 500;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .status-toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    .toast-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+
+    .toast-icon.success {
+      background-color: var(--lg-emerald);
+    }
+
+    .toast-icon.error {
+      background-color: var(--lg-red);
+    }
+
+    .hidden-form {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- -->
+  <div class="container">
+    <div class="glass-container">
+      <div class="glass-filter"></div>
+      <div class="glass-overlay"></div>
+      <div class="glass-specular"></div>
+      
+      <div class="glass-content">
+        <!-- Tab Switcher -->
+        <div class="tabs-container">
+          <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+          <button class="tab-btn" onclick="switchTab('register')">Sign Up</button>
+        </div>
+
+        <!-- -->
+        <div class="login-header">
+          <h2 id="form-title">Welcome Back</h2>
+          <p id="form-subtitle">Please sign in to access your portal</p>
+        </div>
+
+        <!-- -->
+        <!-- SIGN IN FORM -->
+        <form id="login-form" onsubmit="handleFormSubmit(event, 'login')" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <div class="input-wrapper">
+              <input type="email" id="login-email" class="glass-input" placeholder="name@example.com" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="login-pass">Password</label>
+            <div class="input-wrapper">
+              <input type="password" id="login-pass" class="glass-input" placeholder="••••••••" required>
+              <button type="button" class="input-icon-btn" onclick="togglePasswordVisibility('login-pass', this)" title="Show Password">
+                <!-- Eye closed icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="login-footer">
+            <label class="checkbox-label">
+              <input type="checkbox" id="login-remember"> Remember me
+            </label>
+            <a href="#" onclick="triggerAction('forgot_pass')">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="glass-btn">
+            <span>Access Portal</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </form>
+
+        <!-- REGISTER FORM (Initially hidden) -->
+        <form id="register-form" class="hidden-form" onsubmit="handleFormSubmit(event, 'register')" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="form-group">
+            <label for="reg-name">Full Name</label>
+            <div class="input-wrapper">
+              <input type="text" id="reg-name" class="glass-input" placeholder="Jane Doe" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-email">Email Address</label>
+            <div class="input-wrapper">
+              <input type="email" id="reg-email" class="glass-input" placeholder="jane@example.com" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-pass">Create Password</label>
+            <div class="input-wrapper">
+              <input type="password" id="reg-pass" class="glass-input" placeholder="At least 6 characters" required minlength="6">
+              <button type="button" class="input-icon-btn" onclick="togglePasswordVisibility('reg-pass', this)" title="Show Password">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="login-footer">
+            <label class="checkbox-label" style="font-size: 0.8rem;">
+              <input type="checkbox" id="reg-terms" required> I agree to the Terms of Service
+            </label>
+          </div>
+
+          <button type="submit" class="glass-btn">
+            <span>Create Account</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+          </button>
+        </form>
+
+      </div>
+
+
+      
+      <!-- -->
+      <!-- SVG LIQUID-GLASS DISTORTION FILTER -->
+      <svg style="display: none">
+        <filter id="lg-dist" x="0%" y="0%" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92" result="noise" />
+          <feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
+          <feDisplacementMap in="SourceGraphic" in2="blurred" scale="70" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Custom Feedback Toast Message -->
+  <div id="status-toast" class="status-toast">
+    <div id="toast-icon-bg" class="toast-icon">
+      <svg id="toast-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></svg>
+    </div>
+    <span id="toast-message">Action processed!</span>
+  </div>
+
+  <!-- -->
+  <script>
+    // Tab switching utility
+    function switchTab(mode) {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const title = document.getElementById('form-title');
+      const subtitle = document.getElementById('form-subtitle');
+
+      tabBtns.forEach(btn => btn.classList.remove('active'));
+
+      if (mode === 'login') {
+        tabBtns[0].classList.add('active');
+        loginForm.classList.remove('hidden-form');
+        registerForm.classList.add('hidden-form');
+        title.innerText = "Welcome Back";
+        subtitle.innerText = "Please sign in to access your portal";
+      } else {
+        tabBtns[1].classList.add('active');
+        loginForm.classList.add('hidden-form');
+        registerForm.classList.remove('hidden-form');
+        title.innerText = "Create Account";
+        subtitle.innerText = "Sign up today for your glass workstation";
+      }
+    }
+
+    // Toggle eye icon and show/hide characters
+    function togglePasswordVisibility(id, btn) {
+      const input = document.getElementById(id);
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+
+      if (isPassword) {
+        // Eye open icon
+        btn.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+            <line x1="2" y1="2" x2="22" y2="22" stroke="currentColor" stroke-width="2"></line>
+          </svg>
+        `;
+        btn.title = "Hide Password";
+      } else {
+        // Eye closed icon
+        btn.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        `;
+        btn.title = "Show Password";
+      }
+    }
+
+    // Trigger feedback popup toast
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('status-toast');
+      const iconBg = document.getElementById('toast-icon-bg');
+      const icon = document.getElementById('toast-icon');
+      const msgSpan = document.getElementById('toast-message');
+
+      msgSpan.innerText = message;
+      
+      if (type === 'success') {
+        iconBg.className = 'toast-icon success';
+        // Checkmark
+        icon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+      } else {
+        iconBg.className = 'toast-icon error';
+        // Crossmark
+        icon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+      }
+
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4000);
+    }
+
+    // Handle Forms Submission (Simulated endpoint validation)
+    function handleFormSubmit(event, type) {
+      event.preventDefault();
+      
+      if (type === 'login') {
+        const email = document.getElementById('login-email').value;
+        const remember = document.getElementById('login-remember').checked;
+        showToast(`Signed in successfully as ${email}! ${remember ? '(Remembered)' : ''}`, 'success');
+      } else if (type === 'register') {
+        const name = document.getElementById('reg-name').value;
+        showToast(`Welcome, ${name}! Your account has been registered.`, 'success');
+        setTimeout(() => {
+          switchTab('login');
+        }, 1500);
+      }
+    }
+
+    // Interactive action triggers
+    function triggerAction(action) {
+      if (action === 'forgot_pass') {
+        showToast("Password reset link has been dispatched!", "success");
+      }
+    }
+  </script>
+</body>
+</html>

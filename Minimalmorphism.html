@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sōl Studio | Minimalmorphism Sign Up</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Plus Jakarta Sans (Modern Sans-Serif) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons for minimal indicators -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        sand: {
+                            50: '#FAF8F5',   /* Primary Background */
+                            100: '#F3F0E9',  /* Card / Container Fill */
+                            200: '#E6E2D8',  /* Subtle Borders */
+                            300: '#D5CFC1',  /* Stronger Lines */
+                            800: '#3A3935',  /* Soft text dark */
+                            900: '#1E1E1C',  /* Primary dark text */
+                        },
+                        sage: {
+                            50: '#F4F6F4',
+                            100: '#E6EAE6',
+                            600: '#5C6E5E',
+                            800: '#3E4B3F',
+                            900: '#2A332B',  /* Accent Deep Olive/Sage */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FAF8F5;
+            color: #1E1E1C;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Pure hairline input underline focus effect */
+        .minimal-line-field {
+            position: relative;
+        }
+
+        .minimal-line-field::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background-color: #2A332B; /* Accent color */
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .minimal-line-field:focus-within::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* Subtle smooth blur transition for mouse-tracking organic blob */
+        .zen-orb {
+            transition: transform 1.2s cubic-bezier(0.1, 0.8, 0.2, 1), background-color 1.5s ease;
+        }
+
+        /* Zero-noise hide scrollbar utility */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row relative overflow-x-hidden font-sans">
+
+    <!-- Left Screen Panel (40% width on large screens) - The "Zen space" & Brand Identity -->
+    <aside class="w-full lg:w-[42%] bg-sand-100 lg:min-h-screen p-8 md:p-16 flex flex-col justify-between relative overflow-hidden border-b lg:border-b-0 lg:border-r border-sand-200/60 z-10 shrink-0">
+        <!-- Interactive background organic blur coordinate tracking system -->
+        <div id="interactiveCanvas" class="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-45">
+            <div id="orb1" class="zen-orb absolute top-[25%] left-[20%] w-64 h-64 rounded-full bg-sage-100/60 blur-[60px]"></div>
+            <div id="orb2" class="zen-orb absolute bottom-[20%] right-[10%] w-80 h-80 rounded-full bg-[#EAE2D8]/80 blur-[80px]"></div>
+        </div>
+
+        <!-- Left Top Brand -->
+        <div class="relative z-10 flex items-center gap-3">
+            <div class="w-7 h-7 rounded-full border border-sand-900 flex items-center justify-center">
+                <span class="text-[10px] font-semibold tracking-wider text-sand-900">S</span>
+            </div>
+            <span class="text-xs uppercase tracking-[0.25em] font-medium text-sand-900">Sōl Studio</span>
+        </div>
+
+        <!-- Left Middle Poetry & Intentionality -->
+        <div class="relative z-10 my-16 lg:my-auto max-w-md">
+            <span class="text-[10px] uppercase tracking-[0.3em] text-sage-600 block mb-4 font-semibold">01 / Introduction</span>
+            <h2 class="text-4xl md:text-5xl font-serif font-light leading-tight text-sand-900 tracking-tight">
+                Simplicity is not a form of absence. It is a vessel.
+            </h2>
+            <p class="text-sm text-sand-800 font-light leading-relaxed mt-6">
+                Welcome to Sōl. We build intentional digital spaces where utility meets raw aesthetics. No visual clutter, no friction. Just human-centered clarity.
+            </p>
+            <div class="mt-8 flex items-center gap-4 text-xs text-sand-800 font-light">
+                <span class="inline-block w-8 h-[1px] bg-sand-300"></span>
+                <span>Move cursor to interact with light fields</span>
+            </div>
+        </div>
+
+        <!-- Left Bottom Footer Info -->
+        <div class="relative z-10 text-[10px] tracking-widest text-sand-800 uppercase flex gap-8">
+            <span>© 2026 Sōl</span>
+            <span>All details intentional.</span>
+        </div>
+    </aside>
+
+    <!-- Right Screen Panel (60% width on large screens) - The Action Form -->
+    <main class="flex-1 min-h-screen bg-sand-50 p-8 md:p-16 lg:p-24 flex items-center justify-center relative z-10">
+        
+        <!-- Form Boundary Container (Maximized space, clean structure) -->
+        <div class="w-full max-w-md">
+            
+            <!-- Dynamic Notifications Panel (Elegant absolute minimal Toast Banner) -->
+            <div id="toastNotification" class="hidden mb-8 p-5 border border-sand-200 bg-sand-100 items-start gap-4 transition-all duration-500 ease-out">
+                <div id="toastIcon" class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] shrink-0 border mt-0.5"></div>
+                <div class="flex-1">
+                    <h4 id="toastTitle" class="text-xs font-semibold uppercase tracking-wider text-sand-900">Notification</h4>
+                    <p id="toastMessage" class="text-xs text-sand-800 font-light mt-1">Details updated.</p>
+                </div>
+                <button onclick="dismissNotification()" class="text-sand-800 hover:text-sand-900 text-xs py-0.5 px-1.5 uppercase tracking-wider font-light text-[10px]">
+                    Close
+                </button>
+            </div>
+
+            <!-- Header Titles -->
+            <div class="mb-10">
+                <h3 class="text-3xl font-serif text-sand-900 font-light tracking-tight">Begin your journey</h3>
+                <p class="text-xs text-sand-800 font-light mt-2 uppercase tracking-widest">
+                    Create your profile coordinate below
+                </p>
+            </div>
+
+            <form id="minimalistForm" onsubmit="handleRegistration(event)" class="space-y-8">
+                
+                <!-- Field 1: Name -->
+                <div class="minimal-line-field pb-1.5 border-b border-sand-200">
+                    <div class="flex justify-between items-center mb-1">
+                        <label for="fullName" class="text-[10px] uppercase tracking-widest text-sand-800 font-semibold">Full Identity</label>
+                        <span class="text-[9px] text-sand-300 font-light">Required</span>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="fullName" 
+                        name="fullName" 
+                        placeholder="e.g. Liam Sterling" 
+                        required
+                        class="w-full bg-transparent border-none text-sm text-sand-900 py-1 focus:outline-none placeholder-sand-300 font-light tracking-wide"
+                    >
+                </div>
+
+                <!-- Field 2: Email -->
+                <div class="minimal-line-field pb-1.5 border-b border-sand-200">
+                    <div class="flex justify-between items-center mb-1">
+                        <label for="email" class="text-[10px] uppercase tracking-widest text-sand-800 font-semibold">Email Coordinate</label>
+                        <span class="text-[9px] text-sand-300 font-light">Direct address</span>
+                    </div>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="address@domain.com" 
+                        required
+                        class="w-full bg-transparent border-none text-sm text-sand-900 py-1 focus:outline-none placeholder-sand-300 font-light tracking-wide"
+                    >
+                </div>
+
+                <!-- Field 3: Password with elegant single-line meter -->
+                <div class="minimal-line-field pb-1.5 border-b border-sand-200 relative">
+                    <div class="flex justify-between items-center mb-1">
+                        <label for="password" class="text-[10px] uppercase tracking-widest text-sand-800 font-semibold">Password Lock</label>
+                        <!-- Plain text view toggle -->
+                        <button 
+                            type="button" 
+                            onclick="togglePasswordReveal()" 
+                            id="revealBtn" 
+                            class="text-[9px] uppercase tracking-widest text-sand-800 hover:text-sage-900 font-light focus:outline-none"
+                        >
+                            Reveal
+                        </button>
+                    </div>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="••••••••" 
+                        required
+                        oninput="analyzePasswordSecurity()"
+                        class="w-full bg-transparent border-none text-sm text-sand-900 py-1 focus:outline-none placeholder-sand-300 font-light tracking-wide"
+                    >
+                    
+                    <!-- Dynamic password strength indicator hairline bar underneath -->
+                    <div class="absolute bottom-[-1.5px] left-0 w-full h-[1.5px] bg-sand-200/50 pointer-events-none">
+                        <div id="passBar" class="h-full w-0 bg-transparent transition-all duration-500 ease-out"></div>
+                    </div>
+                </div>
+
+                <!-- Strength feedback text -->
+                <div class="flex justify-between items-center text-[9px] uppercase tracking-wider text-sand-800 px-0.5 -mt-5">
+                    <span>Password Rating</span>
+                    <span id="passStatus" class="font-semibold text-sand-300">Unspecified</span>
+                </div>
+
+                <!-- Terms and conditions - completely custom minimal checkbox -->
+                <div class="flex items-start gap-3.5 py-2">
+                    <div class="relative flex items-center h-5">
+                        <input 
+                            id="terms" 
+                            name="terms" 
+                            type="checkbox" 
+                            required
+                            class="peer h-4 w-4 rounded-none border border-sand-300 bg-transparent text-sage-900 focus:ring-0 accent-sage-800 cursor-pointer"
+                        >
+                    </div>
+                    <label for="terms" class="text-xs text-sand-800 font-light leading-relaxed cursor-pointer select-none">
+                        I assent to the <a href="#" class="font-normal underline decoration-1 underline-offset-2 hover:text-sage-900 transition-colors">Digital Charter</a> and Sōl's intentional privacy guidelines.
+                    </label>
+                </div>
+
+                <!-- Form Submit Action -->
+                <div class="pt-4">
+                    <button 
+                        type="submit" 
+                        class="w-full bg-sand-900 hover:bg-sage-900 text-sand-50 py-3.5 text-xs uppercase tracking-[0.25em] font-medium transition-colors duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-1 focus:ring-sage-900"
+                    >
+                        <span>Instantiate Profile</span>
+                        <span class="text-base leading-none font-thin">→</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Minimal Spaced Divider -->
+            <div class="relative my-10 flex items-center justify-center">
+                <div class="absolute w-full border-t border-sand-200/50"></div>
+                <span class="relative px-4 bg-sand-50 text-[9px] uppercase tracking-[0.3em] text-sand-300">
+                    Alternative
+                </span>
+            </div>
+
+            <!-- Plain Text Social Buttons -->
+            <div class="flex items-center justify-between text-[10px] uppercase tracking-widest text-sand-800 px-2">
+                <button onclick="triggerQuickAuth('Google')" class="hover:text-sage-900 font-light hover:underline decoration-1 underline-offset-4 focus:outline-none">
+                    google
+                </button>
+                <span class="text-sand-200">/</span>
+                <button onclick="triggerQuickAuth('GitHub')" class="hover:text-sage-900 font-light hover:underline decoration-1 underline-offset-4 focus:outline-none">
+                    github
+                </button>
+                <span class="text-sand-200">/</span>
+                <button onclick="triggerQuickAuth('Discord')" class="hover:text-sage-900 font-light hover:underline decoration-1 underline-offset-4 focus:outline-none">
+                    discord
+                </button>
+            </div>
+
+            <!-- Footnote Switch Mode -->
+            <div class="text-center mt-12 text-xs font-light text-sand-800">
+                Already registered? 
+                <a href="#" class="font-normal underline decoration-1 underline-offset-4 hover:text-sage-900 ml-1">
+                    Access Profile
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Track mouse movement to smoothly shift ambient canvas blur fields (Zen Experience)
+        const leftPanel = document.querySelector('aside');
+        const orb1 = document.getElementById('orb1');
+        const orb2 = document.getElementById('orb2');
+
+        // Check if device supports hover/mouse movements
+        if (window.matchMedia('(hover: hover)').matches) {
+            window.addEventListener('mousemove', (e) => {
+                const { clientX, clientY } = e;
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+
+                // Normalize coordinates (-50 to 50)
+                const moveX = ((clientX / width) - 0.5) * 60;
+                const moveY = ((clientY / height) - 0.5) * 60;
+
+                // Apply smooth transform displacements
+                orb1.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                orb2.style.transform = `translate(${moveY * -0.8}px, ${moveX * -0.8}px)`;
+            });
+        } else {
+            // Touch/Scroll fallback displacements
+            window.addEventListener('scroll', () => {
+                const scrollPercentage = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+                const offset = scrollPercentage * 40;
+                orb1.style.transform = `translateY(${offset}px)`;
+                orb2.style.transform = `translateY(${-offset}px)`;
+            });
+        }
+
+        // Custom Notification Controller
+        const toast = document.getElementById('toastNotification');
+        const toastIcon = document.getElementById('toastIcon');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMsg = document.getElementById('toastMessage');
+
+        function sendNotification(title, message, isSuccess = true) {
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+            toastTitle.textContent = title;
+            toastMsg.textContent = message;
+
+            if (isSuccess) {
+                toast.className = "mb-8 p-5 border border-sage-600/30 bg-sage-50 items-start gap-4 flex transition-all duration-500 ease-out";
+                toastIcon.className = "w-5 h-5 rounded-full flex items-center justify-center text-[10px] shrink-0 border border-sage-800 bg-sage-100 text-sage-900";
+                toastIcon.innerHTML = "✓";
+            } else {
+                toast.className = "mb-8 p-5 border border-red-200 bg-red-50/40 items-start gap-4 flex transition-all duration-500 ease-out";
+                toastIcon.className = "w-5 h-5 rounded-full flex items-center justify-center text-[10px] shrink-0 border border-red-500 bg-red-100 text-red-800";
+                toastIcon.innerHTML = "!";
+            }
+            toast.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function dismissNotification() {
+            toast.classList.add('hidden');
+            toast.classList.remove('flex');
+        }
+
+        // Plaintext cipher toggle switcher
+        function togglePasswordReveal() {
+            const pwd = document.getElementById('password');
+            const btn = document.getElementById('revealBtn');
+
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                btn.textContent = 'Hide';
+            } else {
+                pwd.type = 'password';
+                btn.textContent = 'Reveal';
+            }
+        }
+
+        // Subtle, elegant single hairline password strength system
+        function analyzePasswordSecurity() {
+            const password = document.getElementById('password').value;
+            const bar = document.getElementById('passBar');
+            const label = document.getElementById('passStatus');
+
+            if (password.length === 0) {
+                bar.style.width = '0%';
+                bar.className = 'h-full w-0 bg-transparent transition-all duration-500 ease-out';
+                label.textContent = 'Unspecified';
+                label.className = 'font-semibold text-sand-300';
+                return;
+            }
+
+            let rating = 0;
+            if (password.length >= 6) rating++;
+            if (password.length >= 10) rating++;
+            if (/[A-Z]/.test(password) && /[0-9]/.test(password)) rating++;
+            if (/[^a-zA-Z0-9]/.test(password)) rating++;
+
+            if (rating <= 1) {
+                // Low complexity - Thin Warm Ochre Accent
+                bar.style.width = '25%';
+                bar.className = 'h-full bg-amber-600 transition-all duration-500 ease-out';
+                label.textContent = 'Simple';
+                label.className = 'font-semibold text-amber-700';
+            } else if (rating === 2 || rating === 3) {
+                // Moderate complexity - Sōl Warm Sage Accent
+                bar.style.width = '60%';
+                bar.className = 'h-full bg-sage-600 transition-all duration-500 ease-out';
+                label.textContent = 'Reliable';
+                label.className = 'font-semibold text-sage-600';
+            } else {
+                // High complexity - Strong Deep Sage Accent
+                bar.style.width = '100%';
+                bar.className = 'h-full bg-sage-900 transition-all duration-500 ease-out';
+                label.textContent = 'Absolute';
+                label.className = 'font-semibold text-sage-900';
+            }
+        }
+
+        // Simulate quick social profiles
+        function triggerQuickAuth(provider) {
+            sendNotification('Federated Account', `Connected with ${provider}. Configuring your workspace coordinates...`, true);
+        }
+
+        // Primary account generation submit logic
+        function handleRegistration(e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const termsChecked = document.getElementById('terms').checked;
+
+            if (fullName.length < 3) {
+                sendNotification('Input Required', 'Please enter a valid, complete identity coordinate.', false);
+                return;
+            }
+
+            if (password.length < 6) {
+                sendNotification('Input Required', 'Identity passwords require at least 6 characters.', false);
+                return;
+            }
+
+            if (!termsChecked) {
+                sendNotification('Assent Required', 'You must agree to the Sōl Charter parameters to register.', false);
+                return;
+            }
+
+            dismissNotification();
+            sendNotification('Instantiation Complete', `Workspace coordinate created for ${fullName}. Initializing interface...`, true);
+
+            // Clean fields quietly
+            document.getElementById('minimalistForm').reset();
+            analyzePasswordSecurity(); // Clear strength indicator
+        }
+    </script>
+</body>
+</html>

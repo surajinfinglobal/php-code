@@ -24,12 +24,12 @@ sort($numbers); // sort the array in ascending order
 echo "<br>";
 // print the sorted numbers
 foreach ($numbers as $number) {
-    echo $number . "<br>";
+    echo $number , " | ";   
 }
 echo "<br>";
 // print the array using for eac loop 
 foreach ($full_cars as $car) {
-    echo $car . "<br>";
+    echo $car ."|";
  }
 
 
@@ -117,6 +117,14 @@ echo "<br>";
 echo strtoupper($name);
 echo "<br>";
 echo "<br>";
+
+// reverse a string using strrev() function
+echo strrev("Hello");
+echo "<br>";
+// uppercase first character of a string using ucfirst() function
+echo ucwords("hello world");
+echo "<br>";
+
 // strtolower() function
 echo strtolower($name);
 echo "<br>";
@@ -188,23 +196,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $carName = $_POST['car_name'];
         if(!empty($carName)){
              array_push($_SESSION['carArray'], $carName);
-               $message = "✅ Car added successfully!";
+               $message = "Car added successfully!";
         } else {
-              $message = "❌ Car name empty hai!";
+              $message = " Car name empty hai!";
         }
     
     }
 
 
     if(isset($_POST['delete'])){
-        $index = $_POST['delete'];
-        if(!empty($_SESSION['carArray'])){
+            if(!empty($_SESSION['carArray'])){
             array_pop($_SESSION['carArray']);
-            $message = "❌ Car deleted successfully!";
+            $message = " Car deleted successfully!";
         } else {
-            $message = "❌✅ No cars to delete!";
+            $message = " No cars to delete!";
         }
 }
+
+header("Location: " . $_SERVER['PHP_SELF']);
+ exit();
 }
 
 
@@ -214,7 +224,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
     <!-- use both method to submit the form  -->
 <!-- <form method="post" action="Learning.php"> -->
-
+<style>
+    input{
+        background-color:yellow;
+         padding: 5px;
+         margin: 5px;
+        height: 30px;
+         border: 1px solid black;
+    }
+    </style>
 
   <label for="name">Name:</label>
   <input type="text"  name="name"> <input type="submit" value="Submit"><br><br>
@@ -223,7 +241,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <button type="submit" name="add_car">Add Car</button><br><br>
     <button type="submit" name="delete">Delete Car</button><br><br>
   <h3>Added Cars (<?php echo count($_SESSION['carArray']); ?>)</h3>
-    <ul>
+    <ul style="list-style-type: square; border: 1px solid black; padding: 10px; width: 200px; BACKGROUND-COLOR: lightyellow;">
         <?php
         if (empty($_SESSION['carArray'])) {
             echo "<li>No cars added yet.</li>";

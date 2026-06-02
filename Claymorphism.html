@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Us! | Claymorphic Sign Up</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #f3e8ff 0%, #e0e7ff 50%, #dbeafe 100%);
+        }
+
+        /* */
+        /* Core Claymorphism Styles */
+        .clay-card {
+            background: #ffffff;
+            border-radius: 40px;
+            /* Outer diffuse shadow + light glow + Dual inner shadows for 3D puffy look */
+            box-shadow: 
+                20px 20px 40px rgba(165, 180, 252, 0.4), 
+                -10px -10px 30px rgba(255, 255, 255, 0.9),
+                inset 8px 8px 16px rgba(255, 255, 255, 0.9), 
+                inset -10px -10px 20px rgba(165, 180, 252, 0.25);
+        }
+
+        .clay-input-well {
+            background: #f1f5f9;
+            border-radius: 24px;
+            /* Inset shadows to make the fields look pressed into clay */
+            box-shadow: 
+                inset 6px 6px 12px rgba(148, 163, 184, 0.15), 
+                inset -6px -6px 12px rgba(255, 255, 255, 0.8),
+                1px 1px 0px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .clay-input-well:focus-within {
+            background: #f8fafc;
+            box-shadow: 
+                inset 4px 4px 8px rgba(99, 102, 241, 0.15), 
+                inset -4px -4px 8px rgba(255, 255, 255, 0.9),
+                0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        /* */
+        /* Puffy Pastel Buttons */
+        .clay-btn-purple {
+            background: #a78bfa;
+            border-radius: 20px;
+            box-shadow: 
+                0px 8px 16px rgba(167, 139, 250, 0.4),
+                inset 6px 6px 10px rgba(255, 255, 255, 0.45),
+                inset -6px -6px 10px rgba(109, 40, 217, 0.2);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .clay-btn-purple:hover {
+            background: #b794f4;
+            transform: translateY(-2px);
+            box-shadow: 
+                0px 12px 20px rgba(167, 139, 250, 0.45),
+                inset 8px 8px 12px rgba(255, 255, 255, 0.5),
+                inset -8px -8px 12px rgba(109, 40, 217, 0.25);
+        }
+
+        .clay-btn-purple:active {
+            transform: scale(0.96) translateY(0);
+            box-shadow: 
+                0px 4px 8px rgba(167, 139, 250, 0.3),
+                inset 4px 4px 6px rgba(255, 255, 255, 0.35),
+                inset -4px -4px 6px rgba(109, 40, 217, 0.15);
+        }
+
+        /* Social buttons (Various Pastel clay variants) */
+        .clay-btn-social {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 
+                0px 6px 12px rgba(165, 180, 252, 0.25),
+                inset 4px 4px 8px rgba(255, 255, 255, 0.9),
+                inset -4px -4px 8px rgba(165, 180, 252, 0.15);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .clay-btn-social:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0px 10px 16px rgba(165, 180, 252, 0.3),
+                inset 6px 6px 10px rgba(255, 255, 255, 0.95),
+                inset -6px -6px 10px rgba(165, 180, 252, 0.2);
+        }
+
+        .clay-btn-social:active {
+            transform: scale(0.95);
+            box-shadow: 
+                0px 3px 6px rgba(165, 180, 252, 0.2),
+                inset 3px 3px 6px rgba(255, 255, 255, 0.9),
+                inset -3px -3px 6px rgba(165, 180, 252, 0.1);
+        }
+
+        /* */
+        /* Puffy Toggle Switch */
+        .clay-toggle {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            background: #cbd5e1;
+            border-radius: 99px;
+            box-shadow: 
+                inset 3px 3px 6px rgba(0, 0, 0, 0.1),
+                inset -3px -3px 6px rgba(255, 255, 255, 0.7);
+            transition: background-color 0.3s ease;
+        }
+
+        .clay-toggle-handle {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            background: #ffffff;
+            border-radius: 99px;
+            box-shadow: 
+                2px 2px 4px rgba(148, 163, 184, 0.4),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+                inset -2px -2px 4px rgba(148, 163, 184, 0.1);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        input:checked + .clay-toggle {
+            background: #86efac; /* Soft green clay check */
+        }
+
+        input:checked + .clay-toggle .clay-toggle-handle {
+            transform: translateX(24px);
+        }
+
+        /* Floating Animation */
+        @keyframes hoverFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        @keyframes hoverFloatReverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(12px) rotate(-4deg); }
+        }
+
+        .float-blob-1 { animation: hoverFloat 6s ease-in-out infinite; }
+        .float-blob-2 { animation: hoverFloatReverse 8s ease-in-out infinite; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 md:p-8 overflow-x-hidden relative">
+
+    <!-- -->
+    <!-- Floating Claymorphic Background Shapes (SVGs with inner gradients mimicking clay highlights) -->
+    <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <!-- Pink/Purple Floating Clay Torus/Donut -->
+        <svg class="absolute top-[10%] left-[5%] md:left-[12%] w-24 h-24 md:w-36 md:h-36 float-blob-1 opacity-80" viewBox="0 0 100 100">
+            <defs>
+                <radialGradient id="clayPink" cx="35%" cy="35%" r="60%">
+                    <stop offset="0%" stop-color="#fbcfe8" />
+                    <stop offset="40%" stop-color="#f472b6" />
+                    <stop offset="100%" stop-color="#be185d" />
+                </radialGradient>
+                <filter id="clayShadow" x="-20%" y="-20%" width="150%" height="150%">
+                    <feDropShadow dx="8" dy="8" stdDeviation="8" flood-color="#f472b6" flood-opacity="0.3" />
+                </filter>
+            </defs>
+            <circle cx="50" cy="50" r="35" fill="url(#clayPink)" filter="url(#clayShadow)" />
+            <circle cx="50" cy="50" r="12" fill="#f3e8ff" /> <!-- Hole cutout style -->
+        </svg>
+
+        <!-- Blue Puffy Clay Capsule -->
+        <svg class="absolute bottom-[8%] right-[5%] md:right-[15%] w-28 h-28 md:w-40 md:h-40 float-blob-2 opacity-80" viewBox="0 0 120 120">
+            <defs>
+                <radialGradient id="clayBlue" cx="30%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#e0f2fe" />
+                    <stop offset="50%" stop-color="#7dd3fc" />
+                    <stop offset="100%" stop-color="#0369a1" />
+                </radialGradient>
+                <filter id="clayShadowBlue" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="10" dy="10" stdDeviation="10" flood-color="#7dd3fc" flood-opacity="0.4" />
+                </filter>
+            </defs>
+            <rect x="25" y="15" width="70" height="90" rx="35" ry="35" fill="url(#clayBlue)" filter="url(#clayShadowBlue)" />
+        </svg>
+
+        <!-- Soft Yellow Star-Blob -->
+        <svg class="absolute top-[65%] left-[4%] w-16 h-16 md:w-24 md:h-24 float-blob-2 opacity-70" viewBox="0 0 100 100">
+            <defs>
+                <radialGradient id="clayYellow" cx="35%" cy="35%" r="65%">
+                    <stop offset="0%" stop-color="#fef08a" />
+                    <stop offset="60%" stop-color="#facc15" />
+                    <stop offset="100%" stop-color="#a16207" />
+                </radialGradient>
+                <filter id="clayShadowYellow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="6" dy="6" stdDeviation="6" flood-color="#facc15" flood-opacity="0.3" />
+                </filter>
+            </defs>
+            <!-- A soft rounded star shape -->
+            <path d="M 50 15 C 55 35, 65 35, 85 50 C 65 65, 55 65, 50 85 C 45 65, 35 65, 15 50 C 35 35, 45 35, 50 15 Z" fill="url(#clayYellow)" filter="url(#clayShadowYellow)" />
+        </svg>
+    </div>
+
+    <!-- -->
+    <!-- Main Sign Up Module -->
+    <main class="w-full max-w-lg z-10">
+        
+        <!-- Main Card container -->
+        <div class="clay-card p-6 md:p-10 relative overflow-hidden">
+            
+            <!-- Logo Section -->
+            <div class="flex flex-col items-center text-center mb-6">
+                <!-- Puffy Logo Icon -->
+                <div class="w-16 h-16 rounded-3xl bg-[#c084fc] flex items-center justify-center text-white text-2xl mb-3 shadow-[0_8px_16px_rgba(192,132,252,0.4),_inset_4px_4px_8px_rgba(255,255,255,0.5),_inset_-4px_-4px_8px_rgba(107,33,168,0.2)]">
+                    <i class="fa-solid fa-shapes animate-pulse"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-indigo-950 tracking-tight">ClayWorld</h1>
+                <p class="text-sm text-slate-500 font-medium mt-1">Sculpt your creative profile today!</p>
+            </div>
+
+            <!-- Custom Notification Clay Banners (replaces raw browser alerts) -->
+            <div id="alertBanner" class="hidden mb-5 p-4 rounded-3xl bg-rose-50 border border-rose-100 text-rose-800 text-sm flex items-start gap-3 shadow-[8px_8px_16px_rgba(244,63,94,0.1),_inset_4px_4px_8px_#fff]">
+                <i class="fa-solid fa-face-surprise text-xl text-rose-500 mt-0.5 animate-bounce"></i>
+                <div class="flex-1">
+                    <strong class="font-bold">Oops! Let's fix that</strong>
+                    <p id="alertMessage" class="text-xs font-medium text-rose-600 mt-0.5">Please check your inputs.</p>
+                </div>
+                <button onclick="dismissAlert()" class="text-rose-400 hover:text-rose-600 focus:outline-none p-1">
+                    <i class="fa-solid fa-circle-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div id="successBanner" class="hidden mb-5 p-4 rounded-3xl bg-emerald-50 border border-emerald-100 text-emerald-800 text-sm flex items-start gap-3 shadow-[8px_8px_16px_rgba(16,185,129,0.15),_inset_4px_4px_8px_#fff]">
+                <i class="fa-solid fa-face-laugh-beam text-xl text-emerald-500 mt-0.5 animate-bounce"></i>
+                <div class="flex-1">
+                    <strong class="font-bold">Hooray! Account Created</strong>
+                    <p id="successMessage" class="text-xs font-medium text-emerald-600 mt-0.5">Welcome! Preparing your sandbox...</p>
+                </div>
+            </div>
+
+            <!-- -->
+            <!-- Form -->
+            <form id="clayForm" onsubmit="handleRegistration(event)" class="space-y-5">
+                
+                <!-- Field 1: Username -->
+                <div>
+                    <label for="username" class="block text-sm font-bold text-indigo-950 mb-1.5 ml-1">Username</label>
+                    <div class="clay-input-well flex items-center px-4 py-1">
+                        <i class="fa-regular fa-face-smile text-slate-400 text-base mr-3"></i>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            placeholder="awesome_clay" 
+                            required
+                            class="w-full bg-transparent text-indigo-950 py-3 text-sm outline-none placeholder-slate-400 font-medium"
+                        >
+                    </div>
+                </div>
+
+                <!-- Field 2: Email -->
+                <div>
+                    <label for="email" class="block text-sm font-bold text-indigo-950 mb-1.5 ml-1">Email Coordinate</label>
+                    <div class="clay-input-well flex items-center px-4 py-1">
+                        <i class="fa-regular fa-envelope text-slate-400 text-base mr-3"></i>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="clay@domain.sys" 
+                            required
+                            class="w-full bg-transparent text-indigo-950 py-3 text-sm outline-none placeholder-slate-400 font-medium"
+                        >
+                    </div>
+                </div>
+
+                <!-- Field 3: Password with Puffy Strength Indicator -->
+                <div>
+                    <label for="password" class="block text-sm font-bold text-indigo-950 mb-1.5 ml-1">Password</label>
+                    <div class="clay-input-well flex items-center pl-4 pr-3 py-1">
+                        <i class="fa-solid fa-shield-cat text-slate-400 text-base mr-3"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="••••••••" 
+                            required
+                            oninput="assessPasswordStrength()"
+                            class="w-full bg-transparent text-indigo-950 py-3 text-sm outline-none placeholder-slate-400 font-medium"
+                        >
+                        <!-- Puffy Show/Hide Toggle Button -->
+                        <button 
+                            type="button" 
+                            onclick="togglePasswordReveal()" 
+                            class="w-9 h-9 rounded-xl bg-white hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-indigo-600 transition-colors shadow-[2px_2px_4px_rgba(0,0,0,0.05),_inset_2px_2px_4px_rgba(255,255,255,0.8)]"
+                            aria-label="Toggle password view"
+                        >
+                            <i id="eyeIcon" class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <!-- Puffy Password Strength Indicator circles -->
+                    <div class="mt-3 px-1">
+                        <div class="flex justify-between items-center text-xs font-bold text-indigo-950/60 mb-2">
+                            <span>Clay Strength</span>
+                            <span id="strengthText" class="text-slate-400">Soft/Unset</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <!-- Circular puffy indicator bulbs -->
+                            <div class="flex gap-2">
+                                <div id="bulb1" class="w-4 h-4 rounded-full bg-slate-200 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1),_inset_-1px_-1px_2px_#fff] transition-all duration-300"></div>
+                                <div id="bulb2" class="w-4 h-4 rounded-full bg-slate-200 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1),_inset_-1px_-1px_2px_#fff] transition-all duration-300"></div>
+                                <div id="bulb3" class="w-4 h-4 rounded-full bg-slate-200 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1),_inset_-1px_-1px_2px_#fff] transition-all duration-300"></div>
+                            </div>
+                            <div class="h-1 flex-1 bg-slate-200/50 rounded-full overflow-hidden">
+                                <div id="strengthBar" class="h-full w-0 bg-rose-400 rounded-full transition-all duration-300"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and Conditions Switch -->
+                <div class="p-3.5 bg-indigo-50/50 rounded-3xl flex items-center justify-between gap-4 shadow-[inset_4px_4px_8px_rgba(165,180,252,0.1),_4px_4px_8px_rgba(165,180,252,0.05)]">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shadow-[inset_2px_2px_4px_#fff]">
+                            <i class="fa-solid fa-feather"></i>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-indigo-950">Agree to Sandbox Terms</span>
+                            <span class="block text-[10px] text-slate-500 font-medium">Accept terms to customize templates</span>
+                        </div>
+                    </div>
+                    <!-- Puffy toggle handle -->
+                    <label class="relative inline-block cursor-pointer">
+                        <input 
+                            type="checkbox" 
+                            class="sr-only" 
+                            id="terms" 
+                            name="terms" 
+                            required
+                        >
+                        <div class="clay-toggle">
+                            <div class="clay-toggle-handle"></div>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Main Create Profile Button -->
+                <div class="pt-2">
+                    <button 
+                        type="submit" 
+                        class="w-full py-4 px-6 text-sm font-bold text-white clay-btn-purple flex items-center justify-center gap-2 focus:outline-none"
+                    >
+                        <i class="fa-solid fa-palette text-sm"></i>
+                        <span>Sculpt My Account</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- -->
+            <!-- Divider -->
+            <div class="relative my-6 flex items-center justify-center">
+                <div class="absolute w-full border-t border-indigo-100"></div>
+                <span class="relative px-4 bg-white font-bold text-xs text-indigo-900/40 uppercase tracking-widest">
+                    Quick Stamp
+                </span>
+            </div>
+
+            <!-- Social Logins -->
+            <div class="grid grid-cols-3 gap-3">
+                <button 
+                    onclick="triggerSocialStamp('Google')" 
+                    class="py-3 px-2 clay-btn-social text-xs font-bold text-slate-700 flex items-center justify-center gap-2"
+                >
+                    <i class="fa-brands fa-google text-rose-500"></i>
+                    <span class="hidden sm:inline">Google</span>
+                </button>
+                <button 
+                    onclick="triggerSocialStamp('GitHub')" 
+                    class="py-3 px-2 clay-btn-social text-xs font-bold text-slate-700 flex items-center justify-center gap-2"
+                >
+                    <i class="fa-brands fa-github text-slate-800"></i>
+                    <span class="hidden sm:inline">GitHub</span>
+                </button>
+                <button 
+                    onclick="triggerSocialStamp('Discord')" 
+                    class="py-3 px-2 clay-btn-social text-xs font-bold text-slate-700 flex items-center justify-center gap-2"
+                >
+                    <i class="fa-brands fa-discord text-indigo-500"></i>
+                    <span class="hidden sm:inline">Discord</span>
+                </button>
+            </div>
+
+            <!-- Footer Section -->
+            <p class="text-center text-xs font-bold text-indigo-950/50 mt-8">
+                Already registered? 
+                <a href="#" class="text-indigo-600 hover:text-indigo-800 transition-colors ml-1 underline decoration-2 underline-offset-4">
+                    Stamp In
+                </a>
+            </p>
+
+        </div>
+    </main>
+
+    <!-- -->
+    <script>
+        // Custom Banners logic (replacing annoying browser alert windows)
+        const alertBanner = document.getElementById('alertBanner');
+        const alertMessage = document.getElementById('alertMessage');
+        const successBanner = document.getElementById('successBanner');
+
+        function displayAlert(msg) {
+            successBanner.classList.add('hidden');
+            alertMessage.textContent = msg;
+            alertBanner.classList.remove('hidden');
+            alertBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function dismissAlert() {
+            alertBanner.classList.add('hidden');
+        }
+
+        function displaySuccess(msg) {
+            alertBanner.classList.add('hidden');
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = msg;
+            successBanner.classList.remove('hidden');
+            successBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Toggle cipher visibility utilizing the custom switch
+        function togglePasswordReveal() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.className = 'fa-regular fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.className = 'fa-regular fa-eye';
+            }
+        }
+
+        // Assess cipher complexity and light up physical LED diodes
+        function assessPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const text = document.getElementById('strengthText');
+            const bar = document.getElementById('strengthBar');
+            
+            const b1 = document.getElementById('bulb1');
+            const b2 = document.getElementById('bulb2');
+            const b3 = document.getElementById('bulb3');
+
+            // Reset bulbs
+            b1.className = 'w-4 h-4 rounded-full bg-slate-200 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1),_inset_-1px_-1px_2px_#fff]';
+            b2.className = 'w-4 h-4 rounded-full bg-slate-200 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1),_inset_-1px_-1px_2px_#fff]';
+            b3.className = 'w-4 h-4 rounded-full bg-slate-200 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1),_inset_-1px_-1px_2px_#fff]';
+            bar.style.width = '0%';
+
+            if (password.length === 0) {
+                text.textContent = 'Soft/Unset';
+                text.className = 'text-slate-400 font-bold';
+                return;
+            }
+
+            let score = 0;
+            if (password.length >= 6) score++;
+            if (password.length >= 10) score++;
+            if (/[A-Z]/.test(password) && /[0-9]/.test(password)) score++;
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+
+            if (score <= 1) {
+                text.textContent = 'Soft Clay (Weak)';
+                text.className = 'text-rose-500 font-bold';
+                
+                // Light up bulb 1 (Puffy red)
+                b1.className = 'w-4 h-4 rounded-full bg-rose-400 shadow-[0_4px_8px_rgba(244,63,94,0.3),_inset_1px_1px_2px_rgba(255,255,255,0.7),_inset_-1px_-1px_2px_rgba(0,0,0,0.15)]';
+                bar.style.width = '33%';
+                bar.className = 'h-full bg-rose-400 rounded-full transition-all duration-300';
+            } else if (score === 2 || score === 3) {
+                text.textContent = 'Firm Clay (Medium)';
+                text.className = 'text-amber-500 font-bold';
+                
+                // Light up bulb 1 & 2 (Puffy amber)
+                b1.className = 'w-4 h-4 rounded-full bg-amber-400 shadow-[0_4px_8px_rgba(251,191,36,0.3),_inset_1px_1px_2px_rgba(255,255,255,0.7),_inset_-1px_-1px_2px_rgba(0,0,0,0.15)]';
+                b2.className = 'w-4 h-4 rounded-full bg-amber-400 shadow-[0_4px_8px_rgba(251,191,36,0.3),_inset_1px_1px_2px_rgba(255,255,255,0.7),_inset_-1px_-1px_2px_rgba(0,0,0,0.15)]';
+                bar.style.width = '66%';
+                bar.className = 'h-full bg-amber-400 rounded-full transition-all duration-300';
+            } else {
+                text.textContent = 'Baked Clay (Strong)';
+                text.className = 'text-emerald-500 font-bold animate-pulse';
+                
+                // Light up all bulbs (Puffy green)
+                b1.className = 'w-4 h-4 rounded-full bg-emerald-400 shadow-[0_4px_8px_rgba(52,211,153,0.3),_inset_1px_1px_2px_rgba(255,255,255,0.7),_inset_-1px_-1px_2px_rgba(0,0,0,0.15)]';
+                b2.className = 'w-4 h-4 rounded-full bg-emerald-400 shadow-[0_4px_8px_rgba(52,211,153,0.3),_inset_1px_1px_2px_rgba(255,255,255,0.7),_inset_-1px_-1px_2px_rgba(0,0,0,0.15)]';
+                b3.className = 'w-4 h-4 rounded-full bg-emerald-400 shadow-[0_4px_8px_rgba(52,211,153,0.3),_inset_1px_1px_2px_rgba(255,255,255,0.7),_inset_-1px_-1px_2px_rgba(0,0,0,0.15)]';
+                bar.style.width = '100%';
+                bar.className = 'h-full bg-emerald-400 rounded-full transition-all duration-300';
+            }
+        }
+
+        // Mock social logins
+        function triggerSocialStamp(portal) {
+            displaySuccess(`Successfully stamp-authenticated with ${portal}! Customizing sandbox profiles...`);
+        }
+
+        // Form Submit
+        function handleRegistration(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const terms = document.getElementById('terms').checked;
+
+            if (username.length < 3) {
+                displayAlert('Oh no! Your username clay needs to be at least 3 units long.');
+                return;
+            }
+
+            if (password.length < 6) {
+                displayAlert('Warning: Your password is too squishy. Needs 6 characters or more!');
+                return;
+            }
+
+            if (!terms) {
+                displayAlert('Wait! You must stamp-activate the Sandbox Terms agreement.');
+                return;
+            }
+
+            dismissAlert();
+            displaySuccess(`Incredible! Sculptor "${username}" has successfully generated their ClayWorld node.`);
+            
+            // Clean wells
+            document.getElementById('clayForm').reset();
+            assessPasswordStrength(); // Reset dials
+        }
+    </script>
+</body>
+</html>
