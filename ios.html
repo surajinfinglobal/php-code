@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iOS Control Center - Glass</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --lg-bg-color: rgba(255, 255, 255, 0.22);
+      --lg-highlight: rgba(255, 255, 255, 0.75);
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: url("https://images.unsplash.com/photo-1551384963-cccb0b7ed94b?q=80&w=3247&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+        center/cover;
+      animation: bg-move 5s ease-in-out infinite alternate;
+      overflow: hidden;
+      transition: filter 0.4s ease;
+    }
+
+    @keyframes bg-move {
+      from { background-position: center center; }
+      to { background-position: center top; }
+    }
+
+    .glass-container {
+      position: relative;
+      background: transparent;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+    }
+
+    .glass-filter {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      backdrop-filter: blur(22px);
+      filter: url(#lg-dist);
+      isolation: isolate;
+    }
+
+    .glass-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .glass-specular {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      border-radius: inherit;
+      box-shadow: inset 1px 1px 0 var(--lg-highlight),
+                  inset 0 0 15px var(--lg-highlight);
+    }
+
+    .glass-content {
+      position: relative;
+      z-index: 3;
+      padding: 14px;
+    }
+
+    .top-section {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .top-section .glass-content {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+      width: 100%;
+      padding: 14px;
+    }
+
+    .top-section .toggle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .top-section .music-player {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      background: transparent;
+    }
+
+    .top-section .music-player > div {
+      width: 100%;
+    }
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1/1;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.15);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      color: white;
+    }
+    .toggle-item.active {
+      background: rgba(255, 255, 255, 0.95);
+      color: #000;
+    }
+    .toggle-item i { font-size: 28px; }
+
+    .music-player {
+      background: transparent;
+    }
+
+    /* Make the music card more visible in the top-section */
+    .top-section .music-player {
+      background: rgba(255, 255, 255, 0.94);
+      color: #08151a;
+      padding: 8px 12px;
+      border-radius: 12px;
+    }
+
+    .top-section .music-player i {
+      color: #08151a;
+    }
+
+    .middle-section {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .focus-box {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .focus-box .glass-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+
+    .sliders-box { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+    .slider-container {
+      background: rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 110px;
+    }
+/* Hide White Dot */
+.vertical-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: none;
+}
+    .vertical-range::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: none;
+}
+
+    .brightness-slider,
+    .volume-slider {
+      accent-color: #fff;
+      width: 10px;
+      height: 6px;
+      border-radius: 9999px;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    /* Main Pill Container */
+.control-pill {
+  width: 88px;
+  height: 240px;
+  border-radius: 9999px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 3px 8px rgba(0, 0, 0, 0.4),
+    0 8px 20px rgba(0, 0, 0, 0.25);
+  border: .5px solid rgba(255,255,255,0.15);
+}
+
+/* Vertical Slider */
+.vertical-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 240px;
+  height: 88px;
+  background: transparent;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  cursor: pointer;
+  z-index: 2;
+}
+
+
+
+
+
+/* Icon at Bottom */
+.icon-bottom {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #1e2937;
+  z-index: 3;
+}
+
+/* Optional: Fill color above thumb */
+.vertical-range::-webkit-slider-runnable-track {
+  background: transparent;
+}
+.control-grid {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            /* background: rgba(40, 40, 40, 0.6); */
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+        }
+        
+.connectivity-card {
+            background: var(--card-bg);
+            width: 160px;
+            height: 160px;
+            border-radius: 35px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+         .music-card {
+            background: var(--card-bg);
+            width: 160px;
+            height: 160px;
+            border-radius: 35px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-sizing: border-box;
+            color: white;
+        }
+
+        /* Airplay icon top right */
+        .airplay-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .music-info {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .music-controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+           
+        }
+
+        .music-controls i {
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.2s;
+        }
+
+        .music-controls i:hover { opacity: 0.7; }
+        .play-btn { font-size: 24px !important; color: white; }
+
+         .music-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .album-art {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Music progress bar below controls */
+        .music-progress {
+          width: 100%;
+          max-width: 140px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          align-items: center;
+          margin-top: 8px;
+        }
+
+        .music-progress .progress-bar {
+          width: 100%;
+          height: 6px;
+          background: rgba(255,255,255,0.18);
+          border-radius: 9999px;
+          overflow: hidden;
+        }
+
+        .music-progress .progress-fill {
+          height: 100%;
+          width: 30%; /* initial fill - update via JS if needed */
+          background: #ffffff;
+          opacity: 0.95;
+          border-radius: 9999px 0 0 9999px;
+          transition: width 0.3s ease;
+        }
+
+        .music-progress .time-labels {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          font-size: 11px;
+          opacity: 0.75;
+          margin-top: 2px;
+        }
+
+        .song-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .artist-name {
+            font-size: 11px;
+            opacity: 0.6;
+            margin: 0;
+        }
+  </style>
+</head>
+<body>
+
+  <div class="w-full mx-auto space-y-4 px-4" style="width: 350px;">
+
+    <!-- Top Row -->
+    <div class="glass-container top-section mb-2" style="margin-bottom: 12px;">
+      <div class="glass-filter"></div>
+      <div class="glass-overlay"></div>
+      <div class="glass-specular"></div>
+      <div class="glass-content">
+        <div class="toggle-grid">
+         <div onclick="toggleFlight(this)" class="toggle-item active flight-toggle"><i class="fa-solid fa-plane"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item active"><i class="fa-solid fa-wifi"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item active"><i class="fa-solid fa-bluetooth-b"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-signal"></i></div>
+        </div>
+        <div class="music-card">
+            <div class="airplay-icon">
+                <i class="fa-solid fa-circle-up"></i>
+            </div>
+            
+            <!-- Song Details (Image + Name) -->
+            <div class="music-info">
+                <img src="https://picsum.photos/id/1015/70/70" class="album-art" alt="Album Art">
+                <p class="song-name">Levitating</p>
+                <p class="artist-name">Dua Lipa</p>
+            </div>
+
+            <!-- Playback Controls -->
+             
+            <div class="music-controls">
+                <i class="fa-solid fa-backward cursor-pointer"></i>
+            <i id="play-btn" class="fa-solid fa-play cursor-pointer text-3xl"></i>
+            <i class="fa-solid fa-forward cursor-pointer"></i>
+            </div>
+            <!-- Progress bar -->
+            <div class="music-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:30%"></div>
+              </div>
+              <div class="time-labels"><span class="current">0:30</span><span class="total">3:42</span></div>
+            </div>
+          </div>
+        
+
+        
+      </div>
+    </div>
+
+
+<!-- <div class="control-grid">
+         <div class="glass-filter"></div>
+      <div class="glass-overlay"></div>
+      <div class="glass-specular"></div>
+        <div class="connectivity-card">
+           <div onclick="toggleIcon(this)" class="toggle-item active"><i class="fa-solid fa-plane"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item active"><i class="fa-solid fa-wifi"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item active"><i class="fa-solid fa-bluetooth-b"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-signal"></i></div>
+        </div>
+
+        <div class="music-card">
+            <div class="airplay-icon">
+                <i class="fa-solid fa-circle-up"></i>
+            </div>
+            
+            <div class="music-info">
+                <img src="https://picsum.photos/id/1015/70/70" class="album-art" alt="Album Art">
+                <p class="song-name">Levitating</p>
+                <p class="artist-name">Dua Lipa</p>
+            </div>
+
+            <div class="music-controls">
+                <i class="fa-solid fa-backward cursor-pointer"></i>
+            <i id="play-btn" onclick="togglePlay(this)" class="fa-solid fa-play cursor-pointer text-3xl"></i>
+            <i class="fa-solid fa-forward cursor-pointer"></i>
+            </div>
+        </div>
+    </div> -->
+
+
+
+    <!-- Middle Row: Sliders inside Focus Container -->
+    <div class="middle-section pt-2" style="margin-bottom: 12px;">
+      <div class="glass-container focus-box">
+        <div class="glass-filter"></div>
+        <div class="glass-overlay"></div>
+        <div class="glass-specular"></div>
+        <div class="glass-content flex justify-center gap-8 py-8">
+
+          <!-- Brightness -->
+          <div class="control-pill">
+            <input type="range" min="20" max="150" value="100" step="1"
+                   class="vertical-range brightness-slider" 
+                   oninput="updateBrightness(this)">
+            <div class="icon-bottom">
+              <i class="fa-solid fa-sun text-2xl"></i>
+            </div>
+          </div>
+
+          <!-- Volume -->
+          <div class="control-pill">
+            <input type="range" min="0" max="100" value="45" step="1"
+                   class="vertical-range volume-slider" 
+                   oninput="updateVolume(this)">
+            <div class="icon-bottom">
+              <i class="fa-solid fa-volume-high text-2xl"></i>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Grid -->
+    <div class="glass-container">
+      <div class="glass-filter"></div>
+      <div class="glass-overlay"></div>
+      <div class="glass-specular"></div>
+      <div class="glass-content">
+        <div class="bottom-grid">
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-bolt"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item active"><i class="fa-solid fa-clock"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-calculator"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-camera"></i></div>
+
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-qrcode"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-bell"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-battery-three-quarters"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-headphones"></i></div>
+
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-stopwatch"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-wifi"></i></div>
+          <div onclick="toggleIcon(this)" class="toggle-item"><i class="fa-solid fa-mobile-screen-button"></i></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SVG Filter -->
+  <svg style="display: none">
+    <filter id="lg-dist" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92" result="noise" />
+      <feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
+      <feDisplacementMap in="SourceGraphic" in2="blurred" scale="70" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <script>
+
+    // for flight mode toggle, we want to disable wifi/signal icons when flight mode is active
+
+    function toggleFlight(el) {
+
+  el.classList.toggle('active');
+
+  if (el.classList.contains('active')) {
+
+    // Stop background animation
+    document.body.style.animation = 'none';
+
+  } else {
+
+    // Resume background animation
+    document.body.style.animation =
+      'bg-move 5s ease-in-out infinite alternate';
+
+  }
+}
+    function toggleIcon(el) {
+      el.classList.toggle('active');
+    }
+
+    function togglePlay(el) {
+      // legacy placeholder removed — audio-aware togglePlay defined later
+    }
+
+    function updateBrightness(slider) {
+      const percent = parseFloat(slider.value);
+      document.body.style.filter = `brightness(${percent}%)`;
+      
+      // Update slider visual
+      slider.style.background = `linear-gradient(to right, #fff ${percent-20}%, transparent ${percent-20}%)`;
+    }
+
+    function updateVolume(slider) {
+      const percent = slider.value;
+      slider.style.background = `linear-gradient(to right, #fff ${percent-20}%, transparent ${percent-20}%)`;
+    }
+
+    // Initialize
+    window.onload = () => {
+      const brightnessSlider = document.querySelector('.brightness-slider');
+      const volumeSlider = document.querySelector('.volume-slider');
+      
+      updateBrightness(brightnessSlider);
+      updateVolume(volumeSlider);
+    };
+
+    // Playlist with 2 songs
+    let currentTrack = 0;
+    const playlist = [
+      {
+        title: "Levitating",
+        artist: "Dua Lipa",
+        src: "Dua Lipa - Levitating Featuring DaBaby (Official Music Video).mp3",
+        cover: "https://picsum.photos/id/1015/70/70"
+      },
+      {
+        title: "Blinding Lights",
+        artist: "The Weeknd",
+        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        cover: "https://picsum.photos/id/237/70/70"
+      }
+    ];
+
+    let audio = new Audio();
+    audio.volume = 0.45; // Default volume
+
+    function loadTrack(index) {
+      currentTrack = index;
+      audio.src = playlist[index].src;
+      
+      // Update UI
+      document.querySelector('.song-name').textContent = playlist[index].title;
+      document.querySelector('.artist-name').textContent = playlist[index].artist;
+      document.querySelector('.album-art').src = playlist[index].cover;
+      
+      // Auto play when track changes
+      if (!audio.paused) {
+        audio.play();
+      }
+    }
+
+    function togglePlay(el) {
+      if (audio.paused) {
+        audio.play();
+        el.classList.remove('fa-play');
+        el.classList.add('fa-pause');
+      } else {
+        audio.pause();
+        el.classList.remove('fa-pause');
+        el.classList.add('fa-play');
+      }
+    }
+
+    function nextTrack() {
+      let next = (currentTrack + 1) % playlist.length;
+      loadTrack(next);
+      const playBtn = document.getElementById('play-btn');
+      if (audio.paused) {
+        togglePlay(playBtn);
+      }
+    }
+
+    function prevTrack() {
+      let prev = (currentTrack - 1 + playlist.length) % playlist.length;
+      loadTrack(prev);
+      const playBtn = document.getElementById('play-btn');
+      if (audio.paused) {
+        togglePlay(playBtn);
+      }
+    }
+
+    function updateVolume(slider) {
+      const percent = parseFloat(slider.value) / 100;
+      audio.volume = percent;
+      
+      // Visual feedback
+      slider.style.background = `linear-gradient(to right, #fff ${percent * 100}%, transparent ${percent * 100}%)`;
+    }
+
+    // Initialize
+    window.onload = () => {
+      const brightnessSlider = document.querySelector('.brightness-slider');
+      const volumeSlider = document.querySelector('.volume-slider');
+
+      // Setup music
+      loadTrack(0);
+
+      // Connect backward and forward buttons
+      const controls = document.querySelectorAll('.music-controls i');
+      controls[0].addEventListener('click', prevTrack);   // Previous
+      controls[2].addEventListener('click', nextTrack);   // Next
+
+      // Play button
+      const playBtn = document.getElementById('play-btn');
+      playBtn.addEventListener('click', function() { togglePlay(this); });
+
+      // Keep play button in sync with audio state
+      audio.addEventListener('play', () => {
+        playBtn.classList.remove('fa-play');
+        playBtn.classList.add('fa-pause');
+      });
+      audio.addEventListener('pause', () => {
+        playBtn.classList.remove('fa-pause');
+        playBtn.classList.add('fa-play');
+      });
+
+      // Progress elements
+      const progressBar = document.querySelector('.music-progress .progress-bar');
+      const progressFill = document.querySelector('.music-progress .progress-fill');
+      const currentLabel = document.querySelector('.music-progress .current');
+      const totalLabel = document.querySelector('.music-progress .total');
+      let isSeeking = false;
+
+      function formatTime(t) {
+        if (!t || isNaN(t)) return '0:00';
+        const m = Math.floor(t / 60);
+        const s = Math.floor(t % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+      }
+
+      function updateProgressUI() {
+        if (!audio.duration || isNaN(audio.duration)) return;
+        const pct = (audio.currentTime / audio.duration) * 100;
+        progressFill.style.width = pct + '%';
+        currentLabel.textContent = formatTime(audio.currentTime);
+        totalLabel.textContent = formatTime(audio.duration);
+      }
+
+      audio.addEventListener('timeupdate', updateProgressUI);
+      audio.addEventListener('loadedmetadata', updateProgressUI);
+      audio.addEventListener('ended', () => { nextTrack(); });
+
+      function seekToClientX(clientX) {
+        const rect = progressBar.getBoundingClientRect();
+        const pct = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+        if (audio.duration) audio.currentTime = pct * audio.duration;
+        updateProgressUI();
+      }
+
+      progressBar.addEventListener('pointerdown', (e) => { isSeeking = true; seekToClientX(e.clientX); });
+      window.addEventListener('pointermove', (e) => { if (isSeeking) seekToClientX(e.clientX); });
+      window.addEventListener('pointerup', (e) => { if (isSeeking) { seekToClientX(e.clientX); isSeeking = false; } });
+
+      // init sliders visuals
+      updateBrightness(brightnessSlider);
+      updateVolume(volumeSlider);
+    };
+  </script>
+</body>
+</html>

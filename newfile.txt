@@ -1,0 +1,2 @@
+File Created Successfully
+this is the example of creating a new text file using fwrite($file, "File Created Successfully") function functionfunction

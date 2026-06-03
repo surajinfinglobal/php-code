@@ -180,6 +180,31 @@ echo "<br>";
 $password = "mysecretpassword";
 $hashed_password = md5($password);
 echo $hashed_password;
+echo "<br>";
+echo "<br>";
+
+$value = "12.5";
+
+// $num = (int)$naam; // type casting to integer
+// var_dump($num);
+$num = 500;
+$naam = 1223.45;
+$str = (string)$num;
+$word =(string)$naam;
+echo $str;
+
+var_dump($num);
+var_dump($str);
+
+echo "<br>";
+echo "<br>";
+function myTest() {
+  define("GREETING", "Welcome to W3Schools.com!");
+}
+
+myTest();
+
+echo GREETING;
 
 ?>
 
@@ -240,7 +265,7 @@ header("Location: " . $_SERVER['PHP_SELF']);
   <input type="text" name="car_name" placeholder="Enter Car" required />
   <button type="submit" name="add_car">Add Car</button><br><br>
     <button type="submit" name="delete">Delete Car</button><br><br>
-  <h3>Added Cars (<?php echo count($_SESSION['carArray']); ?>)</h3>
+  <!-- <h3>Added Cars (<?php echo count($_SESSION['carArray']); ?>)</h3> -->
     <ul style="list-style-type: square; border: 1px solid black; padding: 10px; width: 200px; BACKGROUND-COLOR: lightyellow;">
         <?php
         if (empty($_SESSION['carArray'])) {

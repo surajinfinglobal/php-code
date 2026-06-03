@@ -1,0 +1,29 @@
+readfile() - reads a file and writes it to the output buffer
+fopen() - opens a file (gives you more options than the readfile() function)
+fread() - reads from a file
+fgets() - reads a single line from a file
+fgetc() - reads a single character from a file
+feof() - checks if the "end-of-file" (EOF) has been reached
+fwrite() - writes to a file
+fclose() - closes an open file
+unlink() - deletes a fileThis is a new line added to the file.
+This is a new line added to the file.
+This is a new line added to the file.
+This is a new line added to the file.
+This is a new line added to the file.
+This is a new line added to the file.
+This is a new line added to the file.
+This is a new line added to the file.
+This is a new line added to the file.
+This is a new line added to the file.
+this is my new line this is my new line
+ this is my new line this is my new line
+  this is my new line this is my new line
+   this is my new line this is my new line 
+   this is my new line this is my new line
+   
+    this is my new line this is my new line 
+    this is my new line this is my new line 
+    this is my new line this is my new line 
+    this is my new line 
+    this is my new line 
